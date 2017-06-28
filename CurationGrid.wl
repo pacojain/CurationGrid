@@ -20,7 +20,7 @@ CurationGrid[listIn_, colTypes_List, opts: OptionsPattern[]]:= DynamicModule[
 		list = MapThread[Join, {Table[{j, True}, {j, Range[Length[listIn]]}], listIn}],
 		choiceArray, displayList
 	},
-	choiceArray= Array[0&, {Length[listIn], Length[colTypes]+numExtraFields}];
+	choiceArray= Array["???"&, {Length[listIn], Length[colTypes]+numExtraFields}];
 	displayList = list;
 	sortButton[i_] := Dynamic[Button[Switch[state[[i]], "^", "\[DoubleUpArrow]", "v", "\[DoubleDownArrow]", _, Style["\[DoubleDownArrow]", Hue[0, 0, 0, 0](*use invisible arrow to ensure same width*)]],
 		Switch[state[[i]],
@@ -31,7 +31,7 @@ CurationGrid[listIn_, colTypes_List, opts: OptionsPattern[]]:= DynamicModule[
 	choiceButton[i_] := Dynamic[Button[state[[i]], 
 		Switch[state[[i]],
 			" o ", state[[i]] = " x "; displayList= MapIndexed[If[#2[[2]] === i + numExtraFields, choiceArray[[##]]&@@#2, #]&, list, {2}],
-			_, state[[i]] = " o "; displayList= MapIndexed[If[#2[[2]] === i + numExtraFields, RadioButtonBar[Dynamic[choiceArray[[##]]]&@@#2, #1, Appearance -> "Vertical"], #]&, list, {2}]
+			_, state[[i]] = " o "; displayList= MapIndexed[If[#2[[2]] === i + numExtraFields, RadioButtonBar[Dynamic[choiceArray[[##]]]&@@#2, Prepend[#1, "???"], Appearance -> "Vertical"], #]&, list, {2}]
 		]
 	]];
 	Dynamic[Grid[
