@@ -10,7 +10,7 @@ ClearAll[CurationGrid]
 SetAttributes[CurationGrid, HoldFirst]
 CurationGrid[listIn_, colTypes_List, opts: OptionsPattern[]]:= DynamicModule[
 	{
-		varInName = ToString[HoldForm[listIn]], outVar,
+		varInName = ToString[HoldForm[listIn]], varOutName,
 		numExtraFields = 2,
 		showHideFieldNum = 2,
 		state= ReplaceAll[colTypes, {"Sort" -> "   ", "Choice" -> "   "}],
@@ -20,7 +20,7 @@ CurationGrid[listIn_, colTypes_List, opts: OptionsPattern[]]:= DynamicModule[
 		list = MapThread[Join, {Table[{j, True}, {j, Range[Length[listIn]]}], listIn}],
 		choiceArray, displayList
 	},
-	outVar= Symbol["Global`" <> varInName <> "Out"];
+	varOutName= varInName <> "Out";
 	choiceArray= Array["???"&, {Length[listIn], Length[colTypes]+numExtraFields}];
 	displayList = list;
 	sortButton[i_] := Dynamic[Button[Switch[state[[i]], "^", "\[DoubleUpArrow]", "v", "\[DoubleDownArrow]", _, Style["\[DoubleDownArrow]", Hue[0, 0, 0, 0](*use invisible arrow to ensure same width*)]],
@@ -51,7 +51,7 @@ CurationGrid[listIn_, colTypes_List, opts: OptionsPattern[]]:= DynamicModule[
 			(* grid options *)
 			If[{opts} =!= {}, FilterRules[{opts}, Options[Grid]], Unevaluated[Sequence[Frame -> All, Background -> {None, {{Lighter[LightBlue], None}}}]]]
 		]],
-		Row[{Button["Store grid data", outVar = displayList], InputField[Dynamic[outVar], FieldSize -> {8, 1.5}, BaselinePosition -> Scaled[0.3], Alignment -> {Left, Center}]}]
+		Row[{Button["Store grid data", ClearAll[Evaluate[varOutName]]; Evaluate[Symbol["Global`" <> varOutName]] = displayList], InputField[Dynamic[varOutName], String, FieldSize -> {8, 1.5}, BaselinePosition -> Scaled[0.3], Alignment -> {Left, Center}]}]
 	}]
 ]
 
