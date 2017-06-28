@@ -51,7 +51,7 @@ CurationGrid[listIn_, colTypes_List, opts: OptionsPattern[]]:= DynamicModule[
 			(* grid options *)
 			If[{opts} =!= {}, FilterRules[{opts}, Options[Grid]], Unevaluated[Sequence[Frame -> All, Background -> {None, {{Lighter[LightBlue], None}}}]]]
 		]],
-		Row[{Button["Store grid data", ClearAll[Evaluate[varOutName]]; Evaluate[Symbol["Global`" <> varOutName]] = displayList], InputField[Dynamic[varOutName], String, FieldSize -> {8, 1.5}, BaselinePosition -> Scaled[0.3], Alignment -> {Left, Center}]}]
+		Row[{Button["Store grid data", ClearAll[Evaluate[varOutName]]; Evaluate[Symbol["Global`" <> varOutName]] = displayList], InputField[Dynamic[varOutName], String, FieldSize -> {16, 1.5}, BaselinePosition -> Scaled[0.3], Alignment -> {Left, Center}]}]
 	}]
 ]
 
